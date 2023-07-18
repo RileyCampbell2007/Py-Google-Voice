@@ -1,5 +1,5 @@
 import os
-from selenium.webdriver.common.alert import Alert
+import urllib.parse
 from selenium import webdriver
 from undetected_chromedriver.options import ChromeOptions
 from selenium.webdriver.common.by import By
@@ -7,6 +7,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException
+from webdriver_manager.chrome import ChromeDriverManager
 
 def login(email: str, password: str, saveChromeData: bool = True, chromeDataPath: str = 'google-chrome', headless: bool = True):
     # Setting up Chrome options
@@ -30,7 +31,7 @@ def login(email: str, password: str, saveChromeData: bool = True, chromeDataPath
     chrome_options.add_argument('user-agent="Mozilla/5.0 (Windows NT 10.4;) AppleWebKit/535.17 (KHTML, like Gecko) Chrome/49.0.3318.292 Safari/600"')
 
     # Initializing Chrome WebDriver with options
-    chrome = webdriver.Chrome(options=chrome_options, desired_capabilities={'unexpectedAlertBehaviour': 'ignore'})
+    chrome = webdriver.Chrome(executable_path=ChromeDriverManager().install(), options=chrome_options, desired_capabilities={'unexpectedAlertBehaviour': 'ignore'})
 
     # Execute JavaScript to hide WebDriver properties
     chrome.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
@@ -108,12 +109,12 @@ def check_for_unread_conversations(GVSession):
 
 def read_latest_message(GVSession, conversationID):
     if (not GVSession.current_url.startswith('https://voice.google.com/u/0/messages')):
-        GVSession.get(f'https://voice.google.com/u/0/messages?itemId={conversationID}')
+        GVSession.get(f'https://voice.google.com/u/0/messages?itemId={urllib.parse.quote(conversationID)}')
     else:
         try:
             GVSession.find_element(By.CSS_SELECTOR, f'div[gv-thread-id="{conversationID}"]').click()
         except:
-            GVSession.get(f'https://voice.google.com/u/0/messages?itemId={conversationID}')
+            GVSession.get(f'https://voice.google.com/u/0/messages?itemId={urllib.parse.quote(conversationID)}')
     WebDriverWait(GVSession, 120).until(EC.presence_of_element_located((By.CLASS_NAME,'incoming')))
     messageContainer = GVSession.find_elements(By.CLASS_NAME,'incoming')[-1]
     message = messageContainer.find_element(By.TAG_NAME,'gv-annotation').text
@@ -121,12 +122,12 @@ def read_latest_message(GVSession, conversationID):
 
 def send_message(GVSession, conversationID: str, message: str, photos: list = []):
     if (not GVSession.current_url.startswith('https://voice.google.com/u/0/messages')):
-        GVSession.get(f'https://voice.google.com/u/0/messages?itemId={conversationID}')
+        GVSession.get(f'https://voice.google.com/u/0/messages?itemId={urllib.parse.quote(conversationID)}')
     else:
         try:
             GVSession.find_element(By.CSS_SELECTOR, f'div[gv-thread-id="{conversationID}"]').click()
         except:
-            GVSession.get(f'https://voice.google.com/u/0/messages?itemId={conversationID}')
+            GVSession.get(f'https://voice.google.com/u/0/messages?itemId={urllib.parse.quote(conversationID)}')
     if(len(photos) > 0):
         WebDriverWait(GVSession, 120).until(EC.presence_of_element_located((By.ID, 'ib1')))
         GVSession.execute_script('document.getElementById("ib1").dispatchEvent(new MouseEvent("click", {view: window, bubbles: true, cancelable: true}));')
