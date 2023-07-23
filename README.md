@@ -46,4 +46,4 @@ gv.send_message(GVSession, unread_conversations[0], "This is a test reply from P
 
 Please note that you would need to replace `"youremail@gmail.com"` and `"yourpassword"` with your actual Google Voice email and password in order for this script to work.
 
-2-Facter Authentication is a required step during login, Google will send a notification to your authentication device, you will need to allow the login attempt in order to use this script.
+2-Factor Authentication is a required step during login, Google will send a notification to your authentication device, you will need to allow the login attempt in order to use this script.
