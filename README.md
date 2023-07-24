@@ -1,27 +1,26 @@
-# Py Google Voice
+# PyGoogleVoice: A Python Library for Interacting with Google Voice
 
-Py Google Voice is a Python library that allows users to interact with Google Voice in a Pythonic way. It provides features like logging into a Google Voice account, checking for unread messages, reading the latest message, and sending a message.
+PyGoogleVoice is a powerful Python library that provides a Pythonic way to interact with Google Voice. It enables users to perform various tasks, including logging into a Google Voice account, checking for unread messages, reading the latest message, and sending messages.
 
 ## Dependencies
 
-* Selenium
-* Undetected-chromedriver
-* Webdriver-manager == 3.8.6
-* Google Chrome
+Before using PyGoogleVoice, you need to install the following dependencies:
+- [Selenium](https://www.selenium.dev/): A web automation library used for browser interaction.
+- [Undetected-chromedriver](https://pypi.org/project/undetected-chromedriver/): A library that provides an undetectable Chrome WebDriver for Selenium.
+- [Webdriver-manager](https://pypi.org/project/webdriver-manager/): A library used to manage browser driver executables.
+- [Google Chrome](https://www.google.com/chrome/): The Chrome browser is required for the library to function.
 
-## Install dependencies
-
-You can install the necessary python dependencies using pip:
+You can install the necessary Python dependencies using pip:
 
 ```bash
 pip install selenium undetected-chromedriver webdriver-manager
 ```
 
-Google Chrome can be downloaded from the [Google website](https://chrome.google.com/).
+Please ensure you have Google Chrome installed. If not, you can download it from the [Google website](https://chrome.google.com/).
 
-## How to use
+## How to Use
 
-Creating the Google Voice session is done like this:
+Using PyGoogleVoice is straightforward. First, create a Google Voice session by providing your Google Voice email address and password:
 
 ```python
 from pygooglevoice import GoogleVoice
@@ -32,18 +31,19 @@ password = "password"
 GVSession = GoogleVoice(emailAddress, password)
 ```
 
-Please note that you would need to replace `"example@example.com"` and `"password"` with your actual Google Voice email and password in order for this script to work.
+Replace `"example@example.com"` and `"password"` with your actual Google Voice email and password.
 
-2-Factor Authentication is a required step during login, Google will send a notification to your authentication device, you will need to allow the login attempt in order to use this script.
+Please note that during the login process, if you have 2-Factor Authentication enabled, you will receive a notification on your authentication device. You need to allow the login attempt for the script to work.
 
-If you want to run the browser in headless mode you can set `headless=True`.
+### Optional Parameters
 
+PyGoogleVoice also offers some optional parameters to customize your session:
+- `headless`: Set `headless=True` to run the browser in headless mode, making it invisible during operation.
+- `saveChromeData`: Set `saveChromeData=False` if you don't want to save the Chrome profile data.
+- `chromeDataPath`: Use `chromeDataPath` to specify a custom path for the Chrome profile.
+- `browser`: Use `browser=browsers.chromium` to use Chromium instead of Google Chrome.
 
-If you don't want to save the Chrome Profile you can set `saveChromeData=False`.
-
-If you want to change the Chrome Profile path you can set `chromeDataPath="path/to/profile"`.
-
-If you want to use Chromium instead of Google Chrome you can do:
+For example, to use Chromium instead of Google Chrome:
 
 ```python
 from pygooglevoice import GoogleVoice, browsers
@@ -53,37 +53,46 @@ password = "password"
 
 GVSession = GoogleVoice(emailAddress, password, browser=browsers.chromium)
 ```
+### Checking for Unread Conversations
 
-Checking for conversations with unread messages is done like this:
+You can check for conversations with unread messages:
 
 ```python
 unreadConversations = GVSession.check_for_unread_conversations()
 ```
 
-This will return a list with the conversationIDs of every conversation with unread messages.
+This will return a list containing the conversationIDs of each conversation with unread messages.
 
-To send a message do:
+### Sending a Message
+
+To send a message, use the `send_message` method:
 
 ```python
 GVSession.send_message(conversationID, 'Message')
 ```
 
-Sending with a photo is done like this:
+You can also send a message with a photo:
 
 ```python
 GVSession.send_message(conversationID, 'Message', photos=['path/to/photo.jpg'])
 ```
 
-Reading the latest message in a conversation can be done like this:
+### Reading the Latest Message
+
+To read the latest message in a conversation, use the `read_latest_message` method:
 
 ```python
 message = GVSession.read_latest_message(conversationID)
 ```
 
-The Selenium webdriver can be accesed directly with `GVSession.chrome`.
+### Accessing the WebDriver
 
-## To do
+The Selenium WebDriver used internally by PyGoogleVoice can be accessed directly using `GVSession.chrome`.
 
-* Allow for reading all unread messages instead of the latest message.
-* Add to PyPi so it can be installed via pip.
+## To-Do
 
+There are some improvements planned for PyGoogleVoice:
+- Allow reading all unread messages instead of just the latest message.
+- Publish PyGoogleVoice to PyPi for easier installation using pip.
+
+With PyGoogleVoice, you can automate various tasks in Google Voice, making it a useful tool for managing your Google Voice account programmatically.
