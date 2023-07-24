@@ -31,7 +31,7 @@ def login(email: str, password: str, saveChromeData: bool = True, chromeDataPath
     chrome_options.add_argument('user-agent="Mozilla/5.0 (Windows NT 10.4;) AppleWebKit/535.17 (KHTML, like Gecko) Chrome/49.0.3318.292 Safari/600"')
 
     # Initializing Chrome WebDriver with options
-    chrome = webdriver.Chrome(executable_path=ChromeDriverManager().install(), options=chrome_options, desired_capabilities={'unexpectedAlertBehaviour': 'ignore'})
+    chrome = webdriver.Chrome(service=ChromeDriverManager().install(), options=chrome_options, desired_capabilities={'unexpectedAlertBehaviour': 'ignore'})
 
     # Execute JavaScript to hide WebDriver properties
     chrome.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
