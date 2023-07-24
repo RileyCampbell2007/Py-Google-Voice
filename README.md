@@ -6,7 +6,7 @@ Py Google Voice is a Python library that allows users to interact with Google Vo
 
 * Selenium
 * Undetected-chromedriver
-* Webdriver-manager == 3.9.0
+* Webdriver-manager == 3.8.6
 * Google Chrome
 
 ## Install dependencies
