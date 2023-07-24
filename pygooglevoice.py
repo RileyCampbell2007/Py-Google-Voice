@@ -8,8 +8,13 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException
 from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.core.utils import ChromeType
 
-def login(email: str, password: str, saveChromeData: bool = True, chromeDataPath: str = 'google-chrome', headless: bool = True):
+class browsers:
+    googleChrome = 'googleChrome'
+    chromium = 'chromium'
+
+def login(email: str, password: str, saveChromeData: bool = True, chromeDataPath: str = 'google-chrome', headless: bool = True, browser = 'googleChrome'):
     # Setting up Chrome options
     chrome_options = ChromeOptions()
 
@@ -31,7 +36,13 @@ def login(email: str, password: str, saveChromeData: bool = True, chromeDataPath
     chrome_options.add_argument('user-agent="Mozilla/5.0 (Windows NT 10.4;) AppleWebKit/535.17 (KHTML, like Gecko) Chrome/49.0.3318.292 Safari/600"')
 
     # Initializing Chrome WebDriver with options
-    chrome = webdriver.Chrome(service=ChromeDriverManager().install(), options=chrome_options, desired_capabilities={'unexpectedAlertBehaviour': 'ignore'})
+
+    if(browser == 'googleChrome'):
+        service=ChromeDriverManager().install()
+    elif(browser == 'chromium'):
+        service=ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+
+    chrome = webdriver.Chrome(service=service, options=chrome_options, desired_capabilities={'unexpectedAlertBehaviour': 'ignore'})
 
     # Execute JavaScript to hide WebDriver properties
     chrome.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
