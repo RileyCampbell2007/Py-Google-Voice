@@ -39,11 +39,12 @@ def login(email: str, password: str, saveChromeData: bool = True, chromeDataPath
     # Initializing Chrome WebDriver with options
 
     if(browser == 'googleChrome'):
-        service=ChromeService(ChromeDriverManager().install())
+        print(ChromeDriverManager().install())
+        service=ChromeService(ChromeDriverManager().install(), desired_capabilities={'unexpectedAlertBehaviour': 'ignore'})
     elif(browser == 'chromium'):
-        service=ChromeService(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
+        service=ChromeService(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install(), desired_capabilities={'unexpectedAlertBehaviour': 'ignore'})
 
-    chrome = webdriver.Chrome(service=service, options=chrome_options, desired_capabilities={'unexpectedAlertBehaviour': 'ignore'})
+    chrome = webdriver.Chrome(service=service, options=chrome_options)
 
     # Execute JavaScript to hide WebDriver properties
     chrome.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
