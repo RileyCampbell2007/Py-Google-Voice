@@ -9,6 +9,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.core.utils import ChromeType
+from selenium.webdriver.chrome.service import Service as ChromeService
 
 class browsers:
     googleChrome = 'googleChrome'
@@ -38,9 +39,9 @@ def login(email: str, password: str, saveChromeData: bool = True, chromeDataPath
     # Initializing Chrome WebDriver with options
 
     if(browser == 'googleChrome'):
-        service=ChromeDriverManager().install()
+        service=ChromeService(ChromeDriverManager().install())
     elif(browser == 'chromium'):
-        service=ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+        service=ChromeService(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
 
     chrome = webdriver.Chrome(service=service, options=chrome_options, desired_capabilities={'unexpectedAlertBehaviour': 'ignore'})
 
