@@ -129,7 +129,7 @@ class GoogleVoice:
             except:
                 GVSession.get(f'https://voice.google.com/u/0/messages?itemId={urllib.parse.quote(conversationID)}')
         messageContainer = WebDriverWait(GVSession, 120).until(EC.presence_of_all_elements_located((By.CLASS_NAME,'incoming')))[-1]
-        message = WebDriverWait(GVSession, 120).until(EC.presence_of_element_located((By.TAG_NAME, 'gv-annotation'))).text
+        message = WebDriverWait(messageContainer, 120).until(EC.presence_of_element_located((By.TAG_NAME, 'gv-annotation'))).text
         return message
 
     def send_message(self, conversationID: str, message: str, photos: list = []):
