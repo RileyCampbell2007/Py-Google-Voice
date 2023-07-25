@@ -128,9 +128,8 @@ class GoogleVoice:
                 GVSession.find_element(By.CSS_SELECTOR, f'div[gv-thread-id="{conversationID}"]').click()
             except:
                 GVSession.get(f'https://voice.google.com/u/0/messages?itemId={urllib.parse.quote(conversationID)}')
-        WebDriverWait(GVSession, 120).until(EC.presence_of_element_located((By.CLASS_NAME,'incoming')))
-        messageContainer = GVSession.find_elements(By.CLASS_NAME,'incoming')[-1]
-        message = messageContainer.find_element(By.TAG_NAME,'gv-annotation').text
+        messageContainer = WebDriverWait(GVSession, 120).until(EC.presence_of_all_elements_located((By.CLASS_NAME,'incoming')))[-1]
+        message = WebDriverWait(GVSession, 120).until(EC.presence_of_element_located((By.TAG_NAME, 'gv-annotation'))).text
         return message
 
     def send_message(self, conversationID: str, message: str, photos: list = []):

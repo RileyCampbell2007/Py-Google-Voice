@@ -7,7 +7,7 @@ PyGoogleVoice is a powerful Python library that provides a Pythonic way to inter
 Before using PyGoogleVoice, you need to install the following dependencies:
 - [Selenium](https://www.selenium.dev/): A web automation library used for browser interaction.
 - [Undetected-chromedriver](https://pypi.org/project/undetected-chromedriver/): A library that provides an undetectable Chrome WebDriver for Selenium.
-- [Webdriver-manager](https://pypi.org/project/webdriver-manager/): A library used to manage browser driver executables.
+- [Webdriver-manager](https://pypi.org/project/webdriver-manager/) == 3.8.6: A library used to manage browser driver executables.
 - [Google Chrome](https://www.google.com/chrome/): The Chrome browser is required for the library to function.
 
 You can install the necessary Python dependencies using pip:
