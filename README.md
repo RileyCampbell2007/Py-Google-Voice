@@ -93,6 +93,10 @@ The Selenium WebDriver used internally by PyGoogleVoice can be accessed directly
 
 There are some improvements planned for PyGoogleVoice:
 - Allow reading all unread messages instead of just the latest message.
+- Add conversation management to allow for creating, deleting, and checking if a conversation exists.
+- Allow for deleting messages.
+- Add support for calls.
+- Allow for getting the phone number that Py-Google-Voice is connected to.
 - Publish PyGoogleVoice to PyPi for easier installation using pip.
 
 With PyGoogleVoice, you can automate various tasks in Google Voice, making it a useful tool for managing your Google Voice account programmatically.
