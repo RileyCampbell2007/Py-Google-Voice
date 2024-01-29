@@ -1,102 +1,110 @@
 # PyGoogleVoice: A Python Library for Interacting with Google Voice
 
-PyGoogleVoice is a powerful Python library that provides a Pythonic way to interact with Google Voice. It enables users to perform various tasks, including logging into a Google Voice account, checking for unread messages, reading the latest message, and sending messages.
+PyGoogleVoice is a Python library that offers a Pythonic way to interact with Google Voice. It enables tasks such as logging into a Google Voice account, checking for unread messages, reading and sending messages, and handling attachments in conversations.
 
 ## Dependencies
 
-Before using PyGoogleVoice, you need to install the following dependencies:
-- [Selenium](https://www.selenium.dev/): A web automation library used for browser interaction.
-- [Undetected-chromedriver](https://pypi.org/project/undetected-chromedriver/): A library that provides an undetectable Chrome WebDriver for Selenium.
-- [Webdriver-manager](https://pypi.org/project/webdriver-manager/) == 3.8.6: A library used to manage browser driver executables.
-- [Google Chrome](https://www.google.com/chrome/): The Chrome browser is required for the library to function.
+To use PyGoogleVoice, the following dependencies must be installed:
 
-You can install the necessary Python dependencies using pip:
+- [Selenium](https://www.selenium.dev/)
+- [Undetected-chromedriver](https://pypi.org/project/undetected-chromedriver/)
+- [Webdriver-manager](https://pypi.org/project/webdriver-manager/)
+- [Google Chrome](https://www.google.com/chrome/) or Chromium
+
+Install the Python dependencies using pip:
 
 ```bash
 pip install selenium undetected-chromedriver webdriver-manager
 ```
 
-Please ensure you have Google Chrome installed. If not, you can download it from the [Google website](https://chrome.google.com/).
+Ensure that Google Chrome or Chromium is installed. Download Chrome from the [Google website](https://chrome.google.com/).
 
 ## How to Use
 
-Using PyGoogleVoice is straightforward. First, create a Google Voice session by providing your Google Voice email address and password:
+Create a Google Voice session with your email and password:
 
 ```python
 from pygooglevoice import GoogleVoice
 
-emailAddress = "example@example.com"
-password = "password"
+emailAddress = "your_email@example.com"
+password = "your_password"
 
 GVSession = GoogleVoice(emailAddress, password)
 ```
 
-Replace `"example@example.com"` and `"password"` with your actual Google Voice email and password.
+Replace `"your_email@example.com"` and `"your_password"` with your Google Voice credentials.
 
-Please note that during the login process, if you have 2-Factor Authentication enabled, you will receive a notification on your authentication device. You need to allow the login attempt for the script to work.
+Note: For 2-Factor Authentication, you will receive a prompt on your device. You need to authorize the login attempt.
 
 ### Optional Parameters
 
-PyGoogleVoice also offers some optional parameters to customize your session:
-- `headless`: Set `headless=True` to run the browser in headless mode, making it invisible during operation.
-- `saveChromeData`: Set `saveChromeData=False` if you don't want to save the Chrome profile data.
-- `chromeDataPath`: Use `chromeDataPath` to specify a custom path for the Chrome profile.
-- `browser`: Use `browser=browsers.chromium` to use Chromium instead of Google Chrome.
+Customize your session with optional parameters:
 
-For example, to use Chromium instead of Google Chrome:
+- `headless`: Run browser in headless mode (`headless=True`).
+- `saveChromeData`: Choose whether to save Chrome profile data (`saveChromeData=False` to not save).
+- `chromeDataPath`: Specify custom path for Chrome profile data.
+- `browser`: Choose between Google Chrome (`browser=browsers.googleChrome`) and Chromium (`browser=browsers.chromium`).
+
+### Retrieving the Connected Phone Number
+
+After initializing the GoogleVoice session, you can retrieve the phone number associated with your Google Voice account:
 
 ```python
-from pygooglevoice import GoogleVoice, browsers
-
-emailAddress = "example@example.com"
-password = "password"
-
-GVSession = GoogleVoice(emailAddress, password, browser=browsers.chromium)
+phoneNumber = GVSession.GVNumber
+print("Connected Phone Number:", phoneNumber)
 ```
+
+This will display the phone number connected to your Google Voice account.
+
 ### Checking for Unread Conversations
 
-You can check for conversations with unread messages:
+Check for unread messages:
 
 ```python
 unreadConversations = GVSession.check_for_unread_conversations()
 ```
 
-This will return a list containing the conversationIDs of each conversation with unread messages.
-
-### Sending a Message
-
-To send a message, use the `send_message` method:
-
-```python
-GVSession.send_message(conversationID, 'Message')
-```
-
-You can also send a message with a photo:
-
-```python
-GVSession.send_message(conversationID, 'Message', photos=['path/to/photo.jpg'])
-```
+This returns a list of conversation IDs with unread messages.
 
 ### Reading the Latest Message
 
-To read the latest message in a conversation, use the `read_latest_message` method:
+The `read_latest_message` function returns a message object with the following attributes:
+
+- `text`: The text content of the message.
+- `sender`: The sender of the message. This could be a phone number or a contact name, depending on the information available.
+- `conversation`: The ID of the conversation the message belongs to.
+- `attachments`: A list of attachments in the message. Each attachment is represented as binary data.
+
+Use the function like this:
 
 ```python
 message = GVSession.read_latest_message(conversationID)
+print("Message Text:", message.text)
+print("Sender:", message.sender)
+print("Attachments:", len(message.attachments))
 ```
 
-### Accessing the WebDriver
+### Sending a Message
 
-The Selenium WebDriver used internally by PyGoogleVoice can be accessed directly using `GVSession.chrome`.
+Send a text or media message:
+
+```python
+# Text message
+GVSession.send_message(conversationID, 'Your Message')
+
+# Message with photo
+GVSession.send_message(conversationID, 'Your Message', photos=['path/to/photo.jpg'])
+```
+
+### Internet Connectivity and Inactivity Management
+
+The library includes features to handle internet connectivity issues and reload Google Voice after periods of inactivity. These features help maintain the session's stability and responsiveness.
 
 ## To-Do
 
-There are some improvements planned for PyGoogleVoice:
-- Allow reading all unread messages instead of just the latest message.
-- Add conversation management to allow for creating, deleting, and checking if a conversation exists.
-- Allow for deleting messages.
-- Add support for calls.
-- Allow for getting the phone number that Py-Google-Voice is connected to.
-- Publish PyGoogleVoice to PyPi for easier installation using pip.
+Future improvements for PyGoogleVoice include:
 
-With PyGoogleVoice, you can automate various tasks in Google Voice, making it a useful tool for managing your Google Voice account programmatically.
+- Reading all unread messages.
+- Conversation management (create, delete, check existence).
+- Message deletion.
+- Support for calls.
