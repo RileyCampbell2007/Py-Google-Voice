@@ -24,7 +24,7 @@ Ensure that Google Chrome or Chromium is installed. Download Chrome from the [Go
 Create a Google Voice session with your email and password:
 
 ```python
-from pygooglevoice import GoogleVoice
+from pygooglevoice import GoogleVoice, browsers
 
 emailAddress = "your_email@example.com"
 password = "your_password"
