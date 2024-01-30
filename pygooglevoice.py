@@ -224,19 +224,13 @@ class GoogleVoice:
                     GVSession = self.chrome
                     if (not GVSession.current_url.startswith('https://voice.google.com/u/0/messages')):
                         self.load_google_voice()
-                    conversationsBox = WebDriverWait(WebDriverWait(GVSession,20).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'md-virtual-repeat-container[gv-id="thread-list-container"]'))),20).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div[class="md-virtual-repeat-offsetter"]')))
-                    conversationList = conversationsBox.find_elements(By.CSS_SELECTOR, 'gv-text-thread-item[conversation="conversation"]')
+                    conversationsBox = self.chrome.find_element(By.CSS_SELECTOR, 'md-virtual-repeat-container[gv-id="thread-list-container"] div[class="md-virtual-repeat-offsetter"]')
+                    conversationList = conversationsBox.find_elements(By.CSS_SELECTOR, 'gv-text-thread-item[conversation="conversation"] > gv-thread-item > div[aria-label^="Unread. "]')
                     unreadConversations = []
                     for conversation in conversationList:
-                        try:
-                            conversationElement = conversation.find_element(By.CSS_SELECTOR, 'gv-thread-item').find_element(By.CSS_SELECTOR, 'div')
-                        except:
-                            continue
-                        conversationText = conversationElement.get_attribute('aria-label')
-                        if (conversationText.startswith('Unread. ')):
-                            unreadConversations = [conversationElement.get_attribute('gv-thread-id')] + unreadConversations
+                        unreadConversations = [conversation.get_attribute('gv-thread-id')] + unreadConversations
                     return unreadConversations
-                except:
+                except Exception as e:
                     retryCounter+=1
             raise Exception('Retry counter exceeded')
 
